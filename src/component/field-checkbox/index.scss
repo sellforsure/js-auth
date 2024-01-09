@@ -2,7 +2,7 @@
 @use '../field/index.scss' as field;
 
 .field--checkbox {
-	&__wrapper {
+	.field__wrapper {
 		border: 1px solid s.color('box');
 		padding: s.space(4);
 		border-radius: 10px;

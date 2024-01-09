@@ -19,21 +19,23 @@ class FieldSelect {
   }
 
   static change = (target) => {
-    const active =
-      target.parentElement.querySelector('*[active]')
+    const parent = target.parentElement.parentElement
+    const list = target.parentElement
+
+    const active = list.querySelector('*[active]')
 
     if (active) active.toggleAttribute('active')
 
     target.toggleAttribute('active')
 
-    const parent = target.parentElement.parentElement
-
     const value = parent.querySelector('.field__value')
 
     if (value) {
-      label.innerText = target.innerText
-      label.classList.remove('field__value--placeholder')
+      value.innerText = target.innerText
+      value.classList.remove('field__value--placeholder')
     }
+
+    list.toggleAttribute('active')
   }
 }
 
