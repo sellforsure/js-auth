@@ -12,15 +12,16 @@ class SignupForm extends Form {
     ROLE: 'role',
     IS_CONFIRM: 'isConfirm',
   }
+
   FIELD_ERROR = {
     IS_EMPTY: 'Введіть значення в поле',
     IS_BIG: 'Дуже довге значення, приберіть зайве',
     EMAIL: 'Введіть коректне значення e-mail адреси',
     PASSWORD:
-      'Пароль повинен складатия з не менше ніж 8 символів, включаючи хоча б одну цифру, малу та велику літеру',
+      'Пароль повинен складатися з не менше ніж 8 символів, включаючи хоча б одну цифру, малу та велику літеру',
     PASSWORD_AGAIN:
       'Ваш другий пароль не збігається з першим',
-    NOT_CONFIRM: 'Ви не погоджуєтеся з правилами',
+    NOT_CONFIRM: 'Ви не погоджуєтесь з правилами',
     ROLE: 'Ви не обрали роль',
   }
 
@@ -54,23 +55,58 @@ class SignupForm extends Form {
       }
     }
 
-    if (name === this.FIELD_NAME.IS_CONFIRM) {
-      if (Boolean(value) !== true) {
-        return this.FIELD_ERROR.NOT_CONFIRM
-      }
-    }
-
     if (name === this.FIELD_NAME.ROLE) {
       if (isNaN(value)) {
         return this.FIELD_ERROR.ROLE
       }
     }
+
+    if (name === this.FIELD_NAME.IS_CONFIRM) {
+      if (Boolean(value) !== true) {
+        return this.FIELD_ERROR.NOT_CONFIRM
+      }
+    }
   }
 
-  submit = () => {
-    this.validateAll()
+  submit = async () => {
+    if (this.disabled === true) {
+      this.validateAll()
+    } else {
+      console.log(this.value)
 
-    console.log(this.value)
+      this.setAlert('progress', 'Завантаження...')
+
+      try {
+        const res = await fetch('/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: this.convertData(),
+        })
+
+        const data = await res.json()
+
+        if (res.ok) {
+          this.setAlert('success', data.message)
+        } else {
+          this.setAlert('error', data.message)
+        }
+      } catch (error) {
+        this.setAlert('error', error.message)
+      }
+    }
+  }
+
+  convertData = () => {
+    return JSON.stringify({
+      [this.FIELD_NAME.EMAIL]:
+        this.value[this.FIELD_NAME.EMAIL],
+      [this.FIELD_NAME.PASSWORD]:
+        this.value[this.FIELD_NAME.PASSWORD],
+      [this.FIELD_NAME.ROLE]:
+        this.value[this.FIELD_NAME.ROLE],
+    })
   }
 }
 

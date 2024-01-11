@@ -70,7 +70,7 @@ router.post('/signup', function (req, res) {
     return res.status(200).json({
       message: 'Користувач успішно зареєструвався',
     })
-  } catch {
+  } catch (err) {
     return res
       .status(400)
       .json({ message: 'Помилка створення користувача' })

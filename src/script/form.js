@@ -1,5 +1,5 @@
 export const REG_EXP_EMAIL = new RegExp(
-  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/,
 )
 
 export const REG_EXP_PASSWORD = new RegExp(
@@ -12,7 +12,7 @@ export class Form {
 
   value = {}
   error = {}
-  disabled = false
+  disabled = true
 
   change = (name, value) => {
     const error = this.validate(name, value)
@@ -22,14 +22,16 @@ export class Form {
       this.setError(name, error)
       this.error[name] = error
     } else {
-      this.error(name, null)
+      this.setError(name, null)
       delete this.error[name]
     }
+
+    this.checkDisabled()
   }
 
   setError = (name, error) => {
     const span = document.querySelector(
-      `.form_error[name="${name}"]`,
+      `.form__error[name="${name}"]`,
     )
 
     const field = document.querySelector(
@@ -46,7 +48,7 @@ export class Form {
 
     if (field) {
       field.classList.toggle(
-        'validaton--active',
+        'validation--active',
         Boolean(error),
       )
     }
@@ -56,18 +58,15 @@ export class Form {
     let disabled = false
 
     Object.values(this.FIELD_NAME).forEach((name) => {
-      const error = this.validate(name, this.value[name])
-
       if (
         this.error[name] ||
         this.value[name] === undefined
       ) {
-        m
         disabled = true
       }
     })
 
-    const el = document.querySelector('.button')
+    const el = document.querySelector(`.button`)
 
     if (el) {
       el.classList.toggle(
@@ -85,8 +84,23 @@ export class Form {
 
       if (error) {
         this.setError(name, error)
-        disabled = true
       }
     })
+  }
+
+  setAlert = (status, text) => {
+    const el = document.querySelector(`.alert`)
+
+    if (status === 'progress') {
+      el.className = 'alert alert--progress'
+    } else if (status === 'success') {
+      el.className = 'alert alert--success'
+    } else if (status === 'error') {
+      el.className = 'alert alert--error'
+    } else {
+      el.className = 'alert alert--disabled'
+    }
+
+    if (text) el.innerText = text
   }
 }
