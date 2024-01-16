@@ -35,7 +35,7 @@ class Confirm {
       (item) => item.code === code,
     )
 
-    return obg ? obj.data : null
+    return obj ? obj.data : null
   }
 }
 module.exports = { Confirm }

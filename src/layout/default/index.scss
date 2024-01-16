@@ -49,4 +49,10 @@ body {
 		font-size: 24px;
 		color: s.color('dark')
 	}
+
+	&__subtittle {
+		font-size: 14px;
+		color: grey;
+		line-height: 1.5em;
+	}
 }
