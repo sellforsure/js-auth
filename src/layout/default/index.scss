@@ -1,5 +1,6 @@
 @use '../../style' as s;
 
+
 :root {
 	background-color: s.color('dark');
 }
@@ -30,6 +31,20 @@ body {
 	padding: s.space(8) s.space(6);
 	width: 100%;
 	height: 100%;
+
+	&--top {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__divider {
+		display: block;
+		border: none;
+		width: 100%;
+		margin: 0;
+		height: 1px;
+		background-color: s.color(divider)
+	}
 
 	&--background {
 		background-image: url('/svg/background.svg');
